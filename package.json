@@ -1,0 +1,12 @@
+{
+  "name": "verifyx-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Blockchain-based product authentication and supply-chain traceability platform",
+  "scripts": {
+    "backend": "npm --prefix backend run dev",
+    "frontend": "npm --prefix frontend run dev",
+    "contracts:compile": "npm --prefix smart-contracts run compile",
+    "contracts:test": "npm --prefix smart-contracts run test"
+  }
+}
