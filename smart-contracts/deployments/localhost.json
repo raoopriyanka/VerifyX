@@ -1,0 +1,8 @@
+{
+  "network": "ganache",
+  "chainId": 1337,
+  "RoleManager": "0x9C21C418949021E14A85966216CcE080859c31b7",
+  "VerifyX": "0x5E7A42F7a0cfBD5935Df5f2c0743cA8783fdcA09",
+  "deployer": "0x933FfCbdA7b6AD7B34b1da515989Bd8F996a3a51",
+  "deployedAt": "2026-08-22T13:15:58.619Z"
+}
