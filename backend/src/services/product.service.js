@@ -42,10 +42,8 @@ export const createProduct = async (productData, user) => {
     notes: 'Digital identity minted and registered by Origin Node.',
   });
 
-  return {
-    product,
-    blockchain: blockchainResult
-  };
+  // Return the raw product document directly so the response wrapper contains 'productId' at the root
+  return product;
 };
 
 export const getProducts = async (user) => {

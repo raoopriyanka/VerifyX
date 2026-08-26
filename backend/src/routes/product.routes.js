@@ -5,13 +5,14 @@ import { authorizeRoles } from '../middlewares/role.middleware.js';
 
 const router = express.Router();
 
-// Apply authentication to all product routes
+// Apply authentication middleware to all routes
 router.use(authenticate);
 
-// Only MANUFACTURERS can mint new products
+// Manufacturer endpoints
 router.post('/', authorizeRoles('MANUFACTURER'), productController.registerProduct);
+router.get('/manufacturer', authorizeRoles('MANUFACTURER'), productController.getManufacturerProducts);
 
-// Any authenticated node can view products (filtered by the service)
+// General product endpoints
 router.get('/', productController.getAllProducts);
 router.get('/:productId', productController.getProductDetails);
 

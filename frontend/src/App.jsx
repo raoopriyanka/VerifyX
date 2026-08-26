@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext'; // 1. Import AuthProvider
+import { AuthProvider } from './contexts/AuthContext';
 
 // Layouts
 import MainLayout from './components/layout/MainLayout';
@@ -16,6 +16,7 @@ import AdminDashboard from './pages/dashboard/AdminDashboard';
 import RegisterProduct from './pages/products/RegisterProduct';
 import ProductTracking from './pages/products/ProductTracking';
 import VerifyProduct from './pages/public/VerifyProduct';
+import MyBatches from './pages/products/MyBatches';
 
 // Temporary Placeholders for upcoming steps
 const Placeholder = ({ title }) => (
@@ -28,7 +29,7 @@ const Placeholder = ({ title }) => (
 function App() {
   return (
     <BrowserRouter>
-      <AuthProvider> {/* 2. Wrap your app inside AuthProvider */}
+      <AuthProvider>
         <Routes>
            {/* Public Routes (Navbar & Footer) */}
           <Route element={<MainLayout />}>
@@ -42,20 +43,19 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Route>
 
-          {/* Dashboard Routes (Sidebar & Topbar) */}
+          {/* Dashboard & Product Routes Workspace */}
           <Route path="/dashboard" element={<DashboardLayout role="manufacturer" />}>
             <Route index element={<Navigate to="manufacturer" replace />} />
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="manufacturer" element={<ManufacturerDashboard />} />
             <Route path="distributor" element={<Placeholder title="Distributor Dashboard" />} />
             <Route path="retailer" element={<Placeholder title="Retailer Dashboard" />} />
-          </Route>
-
-          {/* Product Tracking Routes (Inside Dashboard) */}
-          <Route path="/products" element={<DashboardLayout role="manufacturer" />}>
-            <Route path="register" element={<RegisterProduct />} />
-            <Route path="tracking" element={<ProductTracking />} />
-            <Route path=":id" element={<Placeholder title="Product Details" />} />
+            
+            {/* Nested Product Management Routes */}
+            <Route path="register-product" element={<RegisterProduct />} />
+            <Route path="my-batches" element={<MyBatches />} />
+            <Route path="traceability" element={<ProductTracking />} />
+            <Route path="products/:id" element={<Placeholder title="Product Details" />} />
           </Route>
 
           {/* Fallback */}

@@ -1,10 +1,18 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ShieldCheck, LogOut } from 'lucide-react';
+import { useAuth } from '../../contexts/AuthContext'; // Import auth context
 import { NAVIGATION_ITEMS } from './navigationConfig';
 
 export default function Sidebar({ role = 'manufacturer', collapsed = false }) {
+  const navigate = useNavigate();
+  const { logout } = useAuth(); // Pull live logout function
   const navItems = NAVIGATION_ITEMS[role] || NAVIGATION_ITEMS.public;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <aside
@@ -58,9 +66,12 @@ export default function Sidebar({ role = 'manufacturer', collapsed = false }) {
         })}
       </nav>
 
-      {/* Footer Profile / Logout Placeholder */}
+      {/* Footer Profile / Logout Action */}
       <div className="p-4 border-t border-slate-800">
-        <button className="flex items-center gap-3 w-full px-3 py-2 text-sm text-slate-400 hover:text-rose-400 hover:bg-slate-800/60 rounded-lg transition-colors">
+        <button 
+          onClick={handleLogout}
+          className="flex items-center gap-3 w-full px-3 py-2 text-sm text-slate-400 hover:text-rose-400 hover:bg-slate-800/60 rounded-lg transition-colors"
+        >
           <LogOut className="w-4 h-4 shrink-0" />
           {!collapsed && <span>Sign Out</span>}
         </button>

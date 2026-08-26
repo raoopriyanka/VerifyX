@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, Mail, Lock, Building2, UserPlus } from 'lucide-react';
+import { User, Mail, Lock, Building2, UserPlus, Eye, EyeOff } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
+import API from '../../services/api'; // Import your live API client
 
 export default function Register() {
   const navigate = useNavigate();
@@ -21,7 +22,6 @@ export default function Register() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
-    // Clear error for the field being typed in
     if (errors[e.target.id]) {
       setErrors({ ...errors, [e.target.id]: null });
     }
@@ -40,25 +40,38 @@ export default function Register() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleMockRegister = (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     setIsLoading(true);
-    
-    // Mocking an API call delay
-    setTimeout(() => {
+    setErrors({});
+
+    try {
+      // Connect to your live backend registration route
+      await API.post('/auth/register', {
+        name: formData.fullName,
+        email: formData.email,
+        organization: formData.organization,
+        role: formData.role.toUpperCase(), // Ensure role format matches backend expectations (e.g. MANUFACTURER)
+        password: formData.password
+      });
+
+      alert('Node registered successfully! Please sign in with your credentials.');
+      navigate('/login');
+    } catch (err) {
+      const serverMessage = err.response?.data?.message || 'Registration failed. Please try again.';
+      setErrors({ email: serverMessage });
+    } finally {
       setIsLoading(false);
-      alert('Mock Registration Successful! Please sign in.');
-      navigate('/login'); 
-    }, 1500);
+    }
   };
 
   const roleOptions = [
     { value: '', label: 'Select your supply-chain role...' },
-    { value: 'manufacturer', label: 'Manufacturer (Origin Node)' },
-    { value: 'distributor', label: 'Distributor (Transit Node)' },
-    { value: 'retailer', label: 'Retailer (Endpoint Node)' },
+    { value: 'MANUFACTURER', label: 'Manufacturer (Origin Node)' },
+    { value: 'DISTRIBUTOR', label: 'Distributor (Transit Node)' },
+    { value: 'RETAILER', label: 'Retailer (Endpoint Node)' },
   ];
 
   return (
@@ -70,7 +83,7 @@ export default function Register() {
         </p>
       </div>
 
-      <form onSubmit={handleMockRegister} className="space-y-4">
+      <form onSubmit={handleRegisterSubmit} className="space-y-4">
         <Input
           id="fullName"
           label="Full Name"

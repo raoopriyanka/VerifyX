@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Package, Shield, Calendar, Tag, Layers, ArrowLeft, QrCode, AlertCircle, Loader2 } from 'lucide-react';
+import { Package, Shield, Calendar, Tag, Layers, ArrowLeft, AlertCircle, Loader2 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -53,6 +54,8 @@ export default function ProductDetails() {
       </div>
     );
   }
+
+  const verificationUrl = `http://localhost:5173/verify/${product.productId}`;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-12">
@@ -143,8 +146,8 @@ export default function ProductDetails() {
           </Card>
 
           <Card className="text-center">
-            <div className="w-32 h-32 bg-white border-2 border-slate-200 rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm">
-              <QrCode className="w-12 h-12 text-slate-400" />
+            <div className="p-3 bg-white border-2 border-slate-200 rounded-lg inline-flex items-center justify-center mx-auto mb-3 shadow-sm">
+              <QRCodeSVG value={verificationUrl} size={128} />
             </div>
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">VerifyX ID</p>
             <p className="text-md font-mono font-bold text-blue-600 mt-1">{product.productId}</p>

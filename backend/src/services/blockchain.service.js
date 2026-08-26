@@ -1,11 +1,17 @@
 import { getBlockchainContracts } from "../config/blockchain.js";
+import { ethers } from "ethers";
 
 export async function registerProductOnBlockchain(productId, verificationHash) {
   try {
     const { verifyXContract } = await getBlockchainContracts();
     
+    // Ensure hash is formatted as a valid bytes32 hex string with 0x prefix
+    const formattedHash = verificationHash.startsWith('0x') 
+      ? verificationHash 
+      : `0x${verificationHash}`;
+
     // Call the smart contract registration function
-    const tx = await verifyXContract.registerProduct(productId, verificationHash);
+    const tx = await verifyXContract.registerProduct(productId, formattedHash);
     const receipt = await tx.wait();
 
     return {
@@ -27,7 +33,11 @@ export async function recordSupplyChainEventOnBlockchain(productId, eventType, e
   try {
     const { verifyXContract } = await getBlockchainContracts();
     
-    const tx = await verifyXContract.recordSupplyChainEvent(productId, eventType, eventHash, statusEnumIndex);
+    const formattedEventHash = eventHash.startsWith('0x') 
+      ? eventHash 
+      : `0x${eventHash}`;
+
+    const tx = await verifyXContract.recordSupplyChainEvent(productId, eventType, formattedEventHash, statusEnumIndex);
     const receipt = await tx.wait();
 
     return {

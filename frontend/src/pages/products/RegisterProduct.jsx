@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Package, Hash, Calendar, Layers, Tag, QrCode, ArrowRight, Save, CheckCircle2 } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 import PageHeader from '../../components/ui/PageHeader';
 import Card from '../../components/ui/Card';
 import Input from '../../components/ui/Input';
 import Select from '../../components/ui/Select';
 import Button from '../../components/ui/Button';
 import Modal from '../../components/ui/Modal';
-import API from '../../services/api'; // 1. Import your API client
+import API from '../../services/api';
 
 export default function RegisterProduct() {
   const [isLoading, setIsLoading] = useState(false);
@@ -14,7 +15,7 @@ export default function RegisterProduct() {
   const [generatedId, setGeneratedId] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // 2. Form state tracking
+  // Form state tracking
   const [formData, setFormData] = useState({
     name: '',
     brand: '',
@@ -36,7 +37,6 @@ export default function RegisterProduct() {
     setErrorMessage('');
     
     try {
-      // 3. Live backend API call
       const response = await API.post('/products', {
         name: formData.name,
         brand: formData.brand,
@@ -47,14 +47,28 @@ export default function RegisterProduct() {
         price: formData.price ? Number(formData.price) : undefined
       });
 
-      const createdProduct = response.data.data;
+      console.log("Full Registration API Response:", response.data);
+
+      // Extract the payload securely from any nested structure wrapper
+      const responsePayload = response.data;
+      const productObj = responsePayload.data || responsePayload.product || responsePayload;
       
-      // 4. Use the real backend-generated Product ID (e.g. VX-2026-E399F5)
-      setGeneratedId(createdProduct.productId);
+      // Map precisely to your backend Mongoose schema key names
+      const newProductId = 
+        productObj.productId || 
+        productObj.uniqueId || 
+        productObj.serialNumber || 
+        productObj.customId || 
+        productObj.id || 
+        productObj._id || 
+        'VX-DEFAULT-ID';
+      
+      setGeneratedId(newProductId);
       setShowSuccessModal(true);
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || 'Failed to register product.');
-      alert(err.response?.data?.message || 'Failed to register product.');
+      const msg = err.response?.data?.message || 'Failed to register product.';
+      setErrorMessage(msg);
+      alert(msg);
     } finally {
       setIsLoading(false);
     }
@@ -67,6 +81,8 @@ export default function RegisterProduct() {
     { value: 'luxury', label: 'Luxury Goods' },
     { value: 'machinery', label: 'Industrial Machinery' },
   ];
+
+  const verificationUrl = `http://localhost:5173/verify/${generatedId}`;
 
   return (
     <div className="space-y-6 animate-in fade-in duration-500 pb-12">
@@ -211,18 +227,22 @@ export default function RegisterProduct() {
           </p>
           
           <div className="bg-slate-50 p-6 rounded-xl border border-slate-200 w-full flex flex-col items-center mb-6">
-            <div className="w-32 h-32 bg-white border-2 border-slate-300 rounded-lg flex items-center justify-center mb-4 border-dashed">
-              <QrCode className="w-10 h-10 text-slate-300" />
+            <div className="p-3 bg-white border border-slate-300 rounded-lg inline-flex items-center justify-center mb-4 shadow-sm">
+              <QRCodeSVG value={verificationUrl} size={128} />
             </div>
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">VerifyX Product ID</p>
-            <p className="text-lg font-mono font-bold text-blue-600 mt-1">{generatedId}</p>
+            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">VerifyX Product ID</p>
+            <div className="px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-md">
+              <span className="text-base font-mono font-bold text-blue-700 tracking-wide select-all">
+                {generatedId}
+              </span>
+            </div>
           </div>
 
           <div className="flex w-full gap-3">
             <Button variant="secondary" className="flex-1" onClick={() => setShowSuccessModal(false)}>
               Close
             </Button>
-            <Button className="flex-1" icon={QrCode}>
+            <Button className="flex-1" icon={QrCode} onClick={() => window.print()}>
               Print Label
             </Button>
           </div>

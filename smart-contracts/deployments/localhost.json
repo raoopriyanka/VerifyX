@@ -1,8 +1,8 @@
 {
   "network": "ganache",
   "chainId": 1337,
-  "RoleManager": "0x9C21C418949021E14A85966216CcE080859c31b7",
-  "VerifyX": "0x5E7A42F7a0cfBD5935Df5f2c0743cA8783fdcA09",
-  "deployer": "0x933FfCbdA7b6AD7B34b1da515989Bd8F996a3a51",
-  "deployedAt": "2026-08-22T13:15:58.619Z"
+  "RoleManager": "0x9A5dDbB1f37FA6C7De90b17232b56b7ceD463Ec3",
+  "VerifyX": "0x80aD64264AfB1e4623C6355f8aC504c4dbb611ef",
+  "deployer": "0x438fDb904DcdC7E4D4C9Aa5AF5924d9F2E8Fd453",
+  "deployedAt": "2026-08-26T15:07:06.932Z"
 }
