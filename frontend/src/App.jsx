@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 // Layouts
 import MainLayout from './components/layout/MainLayout';
@@ -12,11 +12,19 @@ import LandingPage from './pages/public/LandingPage';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ManufacturerDashboard from './pages/dashboard/ManufacturerDashboard';
+import DistributorDashboard from './pages/dashboard/DistributorDashboard';
+import DistributorVerifyQR from './pages/products/DistributorVerifyQR'; // 👈 Added QR verification page import
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import RegisterProduct from './pages/products/RegisterProduct';
 import ProductTracking from './pages/products/ProductTracking';
 import VerifyProduct from './pages/public/VerifyProduct';
 import MyBatches from './pages/products/MyBatches';
+
+function RoleBasedRedirect() {
+  const { user } = useAuth();
+  const role = user?.role?.toLowerCase() || 'manufacturer';
+  return <Navigate to={`/dashboard/${role}`} replace />;
+}
 
 // Temporary Placeholders for upcoming steps
 const Placeholder = ({ title }) => (
@@ -44,11 +52,12 @@ function App() {
           </Route>
 
           {/* Dashboard & Product Routes Workspace */}
-          <Route path="/dashboard" element={<DashboardLayout role="manufacturer" />}>
-            <Route index element={<Navigate to="manufacturer" replace />} />
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route index element={<RoleBasedRedirect />} />
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="manufacturer" element={<ManufacturerDashboard />} />
-            <Route path="distributor" element={<Placeholder title="Distributor Dashboard" />} />
+            <Route path="distributor" element={<DistributorDashboard />} />
+            <Route path="verify-qr" element={<DistributorVerifyQR />} /> {/* 👈 Added QR verification route */}
             <Route path="retailer" element={<Placeholder title="Retailer Dashboard" />} />
             
             {/* Nested Product Management Routes */}

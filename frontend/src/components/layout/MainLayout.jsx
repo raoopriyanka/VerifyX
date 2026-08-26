@@ -1,9 +1,25 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShieldCheck } from 'lucide-react';
 import Button from '../ui/Button';
 
 export default function MainLayout() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleNavClick = (sectionId) => {
+    if (location.pathname !== '/') {
+      navigate('/');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    } else {
+      const el = document.getElementById(sectionId);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       {/* Public Header */}
@@ -16,10 +32,10 @@ export default function MainLayout() {
             <span className="font-bold text-slate-900 tracking-tight text-lg">VerifyX</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-            <a href="#how-it-works" className="hover:text-slate-900 transition-colors">How It Works</a>
-            <a href="#supply-chain" className="hover:text-slate-900 transition-colors">Supply Chain</a>
-            <a href="#technology" className="hover:text-slate-900 transition-colors">Technology</a>
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 cursor-pointer">
+            <span onClick={() => handleNavClick('how-it-works')} className="hover:text-slate-900 transition-colors">How It Works</span>
+            <span onClick={() => handleNavClick('supply-chain')} className="hover:text-slate-900 transition-colors">Supply Chain</span>
+            <span onClick={() => handleNavClick('technology')} className="hover:text-slate-900 transition-colors">Technology</span>
           </nav>
 
           <div className="flex items-center gap-3">

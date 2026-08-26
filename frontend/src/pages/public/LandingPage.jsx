@@ -1,100 +1,153 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { QrCode, ShieldCheck, Link as LinkIcon, Database, CheckCircle2, Box, Truck, Store } from 'lucide-react';
+import { ShieldCheck, Cpu, Truck, CheckCircle2, ArrowRight, Lock, Layers } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 
 export default function LandingPage() {
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex flex-col min-h-screen bg-slate-50">
       {/* Hero Section */}
-      <section className="relative px-6 py-24 md:py-32 lg:py-40 max-w-7xl mx-auto flex flex-col items-center text-center overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-50 via-white to-white" />
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-medium mb-8">
-          <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-          VerifyX Mainnet v1.0 Live
+      <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto text-center space-y-8">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200/60 shadow-sm">
+          <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse"></span>
+          Decentralized Supply Chain Provenance
         </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl leading-tight">
-          Verify Every Product. <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-            Trust Every Journey.
-          </span>
+        
+        <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tight max-w-4xl mx-auto leading-tight">
+          Immutable Product Authentication & Supply Chain Traceability
         </h1>
-        <p className="mt-6 text-lg md:text-xl text-slate-500 max-w-2xl">
-          Connect physical products with secure digital identities. VerifyX provides immutable 
-          supply-chain traceability and instant counterfeit detection using blockchain technology.
+        
+        <p className="text-base md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          VerifyX protects enterprise supply chains and consumer trust through cryptographic tracking, role-based custody transfers, and smart contract verification.
         </p>
-        <div className="mt-10 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-          <Link to="/verify" className="w-full sm:w-auto">
-            <Button size="lg" icon={QrCode} className="w-full">Verify a Product</Button>
+
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <Link to="/verify">
+            <Button size="lg" className="w-full sm:w-auto px-8 py-4">
+              Verify a Product Now
+            </Button>
           </Link>
-          <a href="#how-it-works" className="w-full sm:w-auto">
-            <Button size="lg" variant="secondary" className="w-full">Explore VerifyX</Button>
-          </a>
+          <Link to="/login">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto px-8 py-4 bg-white">
+              Enterprise Portal Login
+            </Button>
+          </Link>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 bg-slate-50 border-y border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl font-bold text-slate-900">The Supply Chain, Secured.</h2>
-            <p className="mt-4 text-slate-500">A transparent custody handoff from the factory floor to the customer's hands.</p>
+      <section id="how-it-works" className="py-20 bg-white border-t border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">How VerifyX Works</h2>
+            <p className="text-sm text-slate-600">
+              A seamless four-tier lifecycle tracking products securely from factory floor to end consumer.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {[
-              { title: '1. Manufacture', desc: 'Product is assigned a cryptographic identity.', icon: Box },
-              { title: '2. Distribute', desc: 'Custody transfer is recorded on the ledger.', icon: Truck },
-              { title: '3. Retail', desc: 'Inventory arrives and is marked for sale.', icon: Store },
-              { title: '4. Verify', desc: 'Customer scans QR for instant authentication.', icon: QrCode },
-            ].map((step, idx) => (
-              <div key={idx} className="relative flex flex-col items-center text-center">
-                <div className="w-16 h-16 bg-white border border-slate-200 rounded-2xl flex items-center justify-center shadow-sm z-10 mb-6">
-                  <step.icon className="w-8 h-8 text-blue-600" />
-                </div>
-                {idx < 3 && <div className="hidden md:block absolute top-8 left-[60%] w-full h-[1px] bg-slate-300" />}
-                <h3 className="text-lg font-bold text-slate-900 mb-2">{step.title}</h3>
-                <p className="text-sm text-slate-500">{step.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
-      {/* Features / Why VerifyX */}
-      <section className="py-24 max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-slate-900">Why Choose VerifyX?</h2>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { title: 'Product Authenticity', desc: 'Eradicate counterfeits with verifiable cryptographic proofs.', icon: ShieldCheck },
-            { title: 'Tamper-Resistant', desc: 'Once data is written to the ledger, it cannot be altered.', icon: Database },
-            { title: 'Transparent History', desc: 'Trace origin, materials, and complete supply-chain transit.', icon: LinkIcon },
-            { title: 'Consumer Trust', desc: 'Empower buyers to verify purchases with a simple smartphone scan.', icon: CheckCircle2 },
-          ].map((feature, idx) => (
-            <Card key={idx} hoverEffect className="flex flex-col items-start p-8">
-              <feature.icon className="w-8 h-8 text-blue-600 mb-6" />
-              <h3 className="text-lg font-bold text-slate-900 mb-3">{feature.title}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{feature.desc}</p>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <Card className="p-6 border border-slate-200 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">1</div>
+              <h3 className="font-bold text-slate-900">Registration</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Manufacturers register products and batches onto the ledger with unique cryptographic IDs and QR codes.
+              </p>
             </Card>
-          ))}
+
+            <Card className="p-6 border border-slate-200 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">2</div>
+              <h3 className="font-bold text-slate-900">Custody Transfer</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Distributors accept incoming shipments and verify transit states through secure node handoffs.
+              </p>
+            </Card>
+
+            <Card className="p-6 border border-slate-200 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">3</div>
+              <h3 className="font-bold text-slate-900">Retail Dispatch</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Shipments are routed to retail shelves with complete historical auditing preserved immutably.
+              </p>
+            </Card>
+
+            <Card className="p-6 border border-slate-200 shadow-sm space-y-4">
+              <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">4</div>
+              <h3 className="font-bold text-slate-900">Consumer Verification</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                End users scan QR codes instantly to validate product authenticity and combat counterfeit goods.
+              </p>
+            </Card>
+          </div>
         </div>
       </section>
 
-      {/* Technology Section & CTA */}
-      <section id="technology" className="bg-slate-900 text-white py-24 text-center px-6">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold mb-6">Powered by Immutable Technology</h2>
-          <p className="text-slate-400 mb-10 max-w-2xl mx-auto">
-            VerifyX integrates Ethereum-compatible smart contracts, role-based access control, 
-            and modern web infrastructure to create a zero-trust verification environment.
+      {/* Supply Chain Section */}
+      <section id="supply-chain" className="py-20 bg-slate-50 border-t border-slate-200/80">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="text-center space-y-3 max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">End-to-End Supply Chain Visibility</h2>
+            <p className="text-sm text-slate-600">
+              Designed for manufacturers, logistics partners, and retailers to eliminate blind spots.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl w-fit">
+                <CheckCircle2 className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">Anti-Counterfeit Protection</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Cryptographically signed product entries ensure no unauthorized entity can duplicate or tamper with records.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <div className="p-3 bg-blue-50 text-blue-600 rounded-xl w-fit">
+                <Truck className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">Real-Time Tracking</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Monitor live inventory movement across multiple nodes from manufacturer workspace to distributor portals.
+              </p>
+            </div>
+
+            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+              <div className="p-3 bg-amber-50 text-amber-600 rounded-xl w-fit">
+                <Layers className="w-6 h-6" />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900">Batch Auditing</h3>
+              <p className="text-xs text-slate-600 leading-relaxed">
+                Group products into batches and export full audit logs instantly for regulatory compliance.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Technology Section */}
+      <section id="technology" className="py-20 bg-slate-900 text-white border-t border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-8">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
+            <Cpu className="w-4 h-4" /> Robust Tech Stack
+          </div>
+          
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight">
+            Powered by Immutable Technology
+          </h2>
+          
+          <p className="text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
+            VerifyX integrates Ethereum-compatible smart contracts, role-based access control, and modern web infrastructure to create a zero-trust verification environment.
           </p>
-          <Link to="/verify">
-            <Button size="lg" className="bg-white text-slate-900 hover:bg-slate-100 font-bold border-none">
-              Verify a Product Now
-            </Button>
-          </Link>
+
+          <div className="pt-4">
+            <Link to="/verify">
+              <Button size="lg" className="px-8 py-4">
+                Explore Product Verification <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>

@@ -10,16 +10,36 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
-export default function DashboardLayout({ role = 'manufacturer' }) {
+export default function DashboardLayout() {
   const { logout, user } = useAuth();
   const location = useLocation();
+  const role = user?.role?.toLowerCase() || 'manufacturer';
 
-  const navigationItems = [
-    { name: 'Dashboard', href: '/dashboard/manufacturer', icon: LayoutDashboard },
-    { name: 'Register Product', href: '/dashboard/register-product', icon: PackagePlus },
-    { name: 'My Batches', href: '/dashboard/my-batches', icon: Layers },
-    { name: 'Supply Traceability', href: '/dashboard/traceability', icon: Truck },
-  ];
+  // Define role-specific sidebar navigation items
+  const getNavItems = () => {
+    if (role === 'distributor') {
+      return [
+        { name: 'Logistics Portal', href: '/dashboard/distributor', icon: LayoutDashboard },
+        { name: 'Supply Traceability', href: '/dashboard/traceability', icon: Truck },
+       { name: 'QR Verification', href: '/dashboard/verify-qr', icon: ShieldCheck }, // 👈 Add this new item
+      ];
+    }
+    if (role === 'retailer') {
+      return [
+        { name: 'Retail Dashboard', href: '/dashboard/retailer', icon: LayoutDashboard },
+        { name: 'Supply Traceability', href: '/dashboard/traceability', icon: Truck },
+      ];
+    }
+    // Default Manufacturer items
+    return [
+      { name: 'Dashboard', href: '/dashboard/manufacturer', icon: LayoutDashboard },
+      { name: 'Register Product', href: '/dashboard/register-product', icon: PackagePlus },
+      { name: 'My Batches', href: '/dashboard/my-batches', icon: Layers },
+      { name: 'Supply Traceability', href: '/dashboard/traceability', icon: Truck },
+    ];
+  };
+
+  const navigationItems = getNavItems();
 
   return (
     <div className="min-h-screen bg-slate-50 flex">
@@ -58,7 +78,7 @@ export default function DashboardLayout({ role = 'manufacturer' }) {
           <div className="flex items-center justify-between mb-3 px-2">
             <div className="truncate">
               <p className="text-sm font-medium text-white truncate">{user?.name || 'User Node'}</p>
-              <p className="text-xs text-slate-400 capitalize">{role}</p>
+              <p className="text-xs text-slate-400 capitalize">{user?.role || role}</p>
             </div>
           </div>
           <button 
@@ -79,8 +99,8 @@ export default function DashboardLayout({ role = 'manufacturer' }) {
           </div>
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <p className="text-sm font-bold text-slate-900">{user?.name || 'Priyanka Rao'}</p>
-              <p className="text-xs text-slate-500 capitalize">{role}</p>
+              <p className="text-sm font-bold text-slate-900">{user?.name || 'User'}</p>
+              <p className="text-xs text-slate-500 capitalize">{user?.role || role}</p>
             </div>
           </div>
         </header>
