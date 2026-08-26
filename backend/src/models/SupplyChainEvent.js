@@ -5,7 +5,7 @@ const supplyChainEventSchema = new mongoose.Schema(
     productId: { type: String, required: true, index: true },
     eventType: {
       type: String,
-      enum: ['REGISTERED', 'DISPATCHED', 'IN_TRANSIT', 'RECEIVED', 'SOLD', 'FLAGGED'],
+      enum: ['REGISTERED', 'CUSTODY_TRANSFER','DISPATCHED', 'IN_TRANSIT', 'RECEIVED', 'SOLD', 'FLAGGED'],
       required: true,
     },
     fromRole: { type: String, required: true },

@@ -1,10 +1,13 @@
 import * as productService from '../services/product.service.js';
+import Product from '../models/Product.js';
+import SupplyChainEvent from '../models/SupplyChainEvent.js';
 
 export const registerProduct = async (req, res, next) => {
   try {
     const product = await productService.createProduct(req.body, { 
       userId: req.user.userId || req.user._id, 
-      role: req.user.role 
+      role: req.user.role,
+      organization: req.user.organization 
     });
     
     res.status(201).json({
@@ -32,7 +35,6 @@ export const getManufacturerProducts = async (req, res, next) => {
       return !mId || mId === userId.toString() || p.manufacturer === req.user.email;
     });
 
-    // If still empty during early testing, fallback to sending all products so you can see them on your dashboard
     const finalProducts = products.length > 0 ? products : allProducts;
 
     return res.status(200).json({
@@ -63,6 +65,35 @@ export const getProductDetails = async (req, res, next) => {
     if (error.message.includes('not found')) {
       return res.status(404).json({ success: false, message: error.message });
     }
+    next(error);
+  }
+};
+
+// New controller method to handle distributor custody transfer
+export const transferCustody = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const { status } = req.body;
+
+    const product = await Product.findOne({ productId });
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    product.currentHolder = req.user.organization || req.user.role || 'Distributor Node';
+    product.status = status || 'IN_TRANSIT';
+    await product.save();
+
+    await SupplyChainEvent.create({
+      productId,
+      eventType: 'CUSTODY_TRANSFER',
+      fromRole: req.user.role,
+      fromUser: req.user.userId || req.user._id,
+      notes: `Custody transferred and accepted by distributor node.`
+    });
+
+    res.status(200).json({ success: true, data: product });
+  } catch (error) {
     next(error);
   }
 };

@@ -16,4 +16,7 @@ router.get('/manufacturer', authorizeRoles('MANUFACTURER'), productController.ge
 router.get('/', productController.getAllProducts);
 router.get('/:productId', productController.getProductDetails);
 
+// Distributor custody transfer endpoint (accessible by distributors and manufacturers)
+router.patch('/:productId/transfer', authorizeRoles('DISTRIBUTOR', 'MANUFACTURER'), productController.transferCustody);
+
 export default router;
