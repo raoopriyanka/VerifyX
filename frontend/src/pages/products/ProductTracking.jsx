@@ -5,7 +5,7 @@ import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
 import ProductTimeline from '../../components/shared/ProductTimeline';
-import API from '../../services/api'; // Import your live API client
+import API from '../../services/api';
 
 export default function ProductTracking() {
   const [searchId, setSearchId] = useState('');
@@ -22,35 +22,47 @@ export default function ProductTracking() {
     setProductData(null);
 
     try {
-      // Fetch live product and ledger data from your backend
       const response = await API.get(`/products/${searchId.trim()}`);
       const data = response.data.data;
 
-      // Transform backend product data into timeline events structure
+      // Map backend audit events to timeline structure
+      // Inside frontend/src/pages/products/ProductTracking.jsx, update the formattedEvents mapping:
+
+// 1. In frontend/src/pages/products/ProductTracking.jsx (Fix timeline mapping to correctly recognize Retailer vs Distributor and avoid duplicating events)
+// Inside your timeline mapping function (e.g., event mapping loop)
+const formattedEvents = (data.events || []).map((ev) => {
+    let title = 'Custody Transfer';
+    let description = ev.notes || 'Custody successfully transferred.';
+
+    // Check if it's the creation/minting event
+    if (ev.eventType === 'REGISTERED' || ev.status === 'MANUFACTURED') {
+      title = 'Product Minted & Registered';
+    } 
+    // Check if the notes or role belong to a retailer
+    else if (ev.notes?.toLowerCase().includes('retail') || ev.fromRole === 'RETAILER') {
+      title = 'Custody Accepted by Retailer';
+    } 
+    // Otherwise, fallback to distributor
+    else {
+      title = 'Custody Accepted by Distributor';
+    }
+
+    return {
+      title,
+      description,
+      date: new Date(ev.createdAt || Date.now()).toLocaleString(),
+      txHash: ev.eventType === 'REGISTERED' ? ev.txHash || 'e1e3ee8c22...' : 'Confirmed on Ganache',
+      status: 'completed', // Forces the shared timeline component to render the green check
+      icon: 'check'       // Alternative prop name depending on your ProductTimeline setup
+    };
+  });
       const formattedData = {
         id: data.productId,
         name: data.name,
-        manufacturer: data.brand || 'VerifyX Origin Node',
+        manufacturer: data.manufacturer?.name || data.manufacturer?.organization || 'VerifyX Origin Node',
         currentHolder: data.currentHolder || 'Authorized Supply Chain Node',
-        status: data.status || 'In Transit',
-        events: [
-          {
-            type: 'manufactured',
-            status: 'completed',
-            title: 'Product Minted & Registered',
-            description: `Batch: ${data.batchNumber} - Created on network database.`,
-            date: new Date(data.createdAt || Date.now()).toLocaleString(),
-            txHash: data.verificationHash ? `${data.verificationHash.substring(0, 10)}...` : '0xVerified'
-          },
-          {
-            type: 'transit',
-            status: data.status === 'IN_TRANSIT' || data.status === 'RECEIVED' ? 'completed' : 'current',
-            title: 'Dispatched to Transit',
-            description: 'Custody successfully transferred across logistics node.',
-            date: data.manufacturingDate || 'Active Node',
-            txHash: 'Confirmed on Ganache'
-          }
-        ]
+        status: data.status || 'IN_TRANSIT',
+        events: formattedEvents
       };
 
       setProductData(formattedData);
@@ -68,7 +80,6 @@ export default function ProductTracking() {
         description="Track product custody transfers and verify ledger events."
       />
 
-      {/* Search Bar */}
       <Card className="p-4 bg-white border-blue-100">
         <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
           <div className="flex-1 relative">
@@ -91,8 +102,6 @@ export default function ProductTracking() {
 
       {productData && (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-in fade-in duration-300">
-          
-          {/* Product Details Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             <Card className="border-t-4 border-t-blue-600">
               <div className="flex items-start justify-between mb-4">
@@ -123,14 +132,12 @@ export default function ProductTracking() {
             </Card>
           </div>
 
-          {/* Timeline View */}
           <div className="lg:col-span-2">
             <Card className="h-full p-8 bg-slate-50/50">
               <h3 className="text-lg font-bold text-slate-900 mb-8 text-center md:text-left">Custody Ledger Timeline</h3>
               <ProductTimeline events={productData.events} />
             </Card>
           </div>
-
         </div>
       )}
     </div>

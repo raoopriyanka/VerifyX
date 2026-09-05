@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight, ArrowLeft } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import Input from '../../components/ui/Input';
-import { useAuth } from '../../contexts/AuthContext'; // 1. Import your auth hook
+import { useAuth } from '../../contexts/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // 2. Pull the live login function from context
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -22,13 +22,11 @@ export default function Login() {
     setIsLoading(true);
     setErrorMessage('');
     
-    // 3. Call your live backend login function
     const result = await login(formData.email, formData.password);
 
     setIsLoading(false);
 
     if (result.success) {
-      // 4. Route securely based on the role returned from the backend
       if (result.role === 'MANUFACTURER') {
         navigate('/dashboard/manufacturer');
       } else if (result.role === 'ADMIN') {
@@ -37,14 +35,23 @@ export default function Login() {
         navigate('/dashboard');
       }
     } else {
-      // Display the backend error message
       setErrorMessage(result.message || 'Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <div className="w-full">
-      <div className="mb-8">
+    <div className="w-full relative">
+      {/* Back to Landing Page Button */}
+      <div className="absolute -top-12 right-0 sm:top-0 sm:right-0">
+        <Link 
+          to="/" 
+          className="inline-flex items-center gap-2 text-xs font-semibold text-slate-600 hover:text-blue-600 bg-slate-100 hover:bg-slate-200/60 px-3 py-1.5 rounded-lg transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" /> Back to Home
+        </Link>
+      </div>
+
+      <div className="mb-8 pt-4 sm:pt-0">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Welcome back</h1>
         <p className="text-sm text-slate-500 mt-2">
           Sign in to your VerifyX supply-chain node.

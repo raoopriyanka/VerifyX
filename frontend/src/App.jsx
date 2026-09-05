@@ -13,12 +13,15 @@ import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
 import ManufacturerDashboard from './pages/dashboard/ManufacturerDashboard';
 import DistributorDashboard from './pages/dashboard/DistributorDashboard';
-import DistributorVerifyQR from './pages/products/DistributorVerifyQR'; // 👈 Added QR verification page import
+import DistributorVerifyQR from './pages/products/DistributorVerifyQR';
 import AdminDashboard from './pages/dashboard/AdminDashboard';
 import RegisterProduct from './pages/products/RegisterProduct';
 import ProductTracking from './pages/products/ProductTracking';
 import VerifyProduct from './pages/public/VerifyProduct';
 import MyBatches from './pages/products/MyBatches';
+import RetailerDashboard from './pages/dashboard/RetailerDashboard';
+import RetailInventory from './pages/retail/RetailInventory'; // 👈 Added Retail Inventory page import
+import RetailReturns from './pages/retail/RetailReturns';
 
 function RoleBasedRedirect() {
   const { user } = useAuth();
@@ -57,9 +60,13 @@ function App() {
             <Route path="admin" element={<AdminDashboard />} />
             <Route path="manufacturer" element={<ManufacturerDashboard />} />
             <Route path="distributor" element={<DistributorDashboard />} />
-            <Route path="verify-qr" element={<DistributorVerifyQR />} /> {/* 👈 Added QR verification route */}
-            <Route path="retailer" element={<Placeholder title="Retailer Dashboard" />} />
+            <Route path="verify-qr" element={<DistributorVerifyQR />} />
+            <Route path="retailer" element={<RetailerDashboard />} />
             
+            {/* Retailer Specific Pages */}
+            <Route path="retail/inventory" element={<RetailInventory />} /> {/* 👈 Added Store Inventory route */}
+            <Route path="retail/returns" element={<RetailReturns />} />
+
             {/* Nested Product Management Routes */}
             <Route path="register-product" element={<RegisterProduct />} />
             <Route path="my-batches" element={<MyBatches />} />

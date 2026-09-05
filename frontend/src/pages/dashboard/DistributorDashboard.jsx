@@ -232,20 +232,14 @@ export default function DistributorDashboard() {
                           <Button
                             size="sm"
                             isLoading={actionLoadingId === item.productId}
-                            onClick={() => handleUpdateStatus(item.productId, 'IN_TRANSIT', 'Custody accepted by distributor node.')}
+                            onClick={() => handleUpdateStatus(item.productId, 'IN_TRANSIT', 'Custody transferred and accepted by distributor node (Distributor).')}
                           >
                             Accept Custody
                           </Button>
                         ) : item.status === 'IN_TRANSIT' ? (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100"
-                            isLoading={actionLoadingId === item.productId}
-                            onClick={() => handleUpdateStatus(item.productId, 'DELIVERED', 'Dispatched to retail network / final delivery.')}
-                          >
-                            Dispatch to Retailer
-                          </Button>
+                          <span className="text-xs font-semibold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
+                            Custody Accepted / Handed Over
+                          </span>
                         ) : (
                           <Link
                             to={`/dashboard/traceability?id=${item.productId}`}

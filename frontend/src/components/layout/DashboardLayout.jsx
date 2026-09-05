@@ -5,9 +5,14 @@ import {
   PackagePlus, 
   Layers, 
   Truck, 
+  QrCode, 
   ShieldCheck, 
-  LogOut 
+  LogOut, 
+  Menu, 
+  X,
+  PackageCheck // 👈 Add PackageCheck here
 } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export default function DashboardLayout() {
@@ -28,6 +33,8 @@ export default function DashboardLayout() {
       return [
         { name: 'Retail Dashboard', href: '/dashboard/retailer', icon: LayoutDashboard },
         { name: 'Supply Traceability', href: '/dashboard/traceability', icon: Truck },
+        { name: 'Store Inventory', href: '/dashboard/retail/inventory', icon: PackageCheck },
+        { name: 'Returns & Claims', href: '/dashboard/retail/returns', icon: AlertTriangle }
       ];
     }
     // Default Manufacturer items

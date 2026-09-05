@@ -26,10 +26,8 @@ export const getManufacturerProducts = async (req, res, next) => {
   try {
     const userId = req.user.userId || req.user._id;
     
-    // Fetch products using product service to match your data layer
     const allProducts = await productService.getProducts(req.user);
     
-    // Fallback: if filtering returns 0, return all products for testing view or match loosely
     const products = allProducts.filter(p => {
       const mId = p.manufacturer?.toString() || p.createdBy?.toString();
       return !mId || mId === userId.toString() || p.manufacturer === req.user.email;
@@ -50,7 +48,31 @@ export const getManufacturerProducts = async (req, res, next) => {
 
 export const getAllProducts = async (req, res, next) => {
   try {
-    const products = await productService.getProducts(req.user);
+    let products;
+
+    if (req.user.role === 'DISTRIBUTOR') {
+      const userId = req.user.userId || req.user._id;
+      // Fetch only items assigned to this distributor or waiting for initial intake
+      products = await Product.find({
+        $or: [
+          { currentHolderId: userId },
+          { distributor: userId },
+          { currentHolderId: { $exists: false }, status: { $ne: 'DELIVERED' } }
+        ]
+      });
+    } else if (req.user.role === 'RETAILER') {
+      // Fetch delivered items as well as any flagged discrepancies so they stay visible in store inventory
+      const userId = req.user.userId || req.user._id;
+      products = await Product.find({
+        $or: [
+          { currentHolderId: userId },
+          { status: { $in: ['DELIVERED', 'DISCREPANCY_FLAGGED'] } }
+        ]
+      });
+    } else {
+      products = await productService.getProducts(req.user);
+    }
+
     res.status(200).json({ success: true, data: products });
   } catch (error) {
     next(error);
@@ -69,30 +91,58 @@ export const getProductDetails = async (req, res, next) => {
   }
 };
 
-// New controller method to handle distributor custody transfer
 export const transferCustody = async (req, res, next) => {
   try {
     const { productId } = req.params;
-    const { status } = req.body;
+    const { status, notes } = req.body; // Accept custom notes from frontend
 
     const product = await Product.findOne({ productId });
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found.' });
     }
 
-    product.currentHolder = req.user.organization || req.user.role || 'Distributor Node';
-    product.status = status || 'IN_TRANSIT';
+    const userId = req.user.id || req.user.userId || req.user._id;
+    const role = req.user.role || 'USER';
+    const org = req.user.organization || role;
+
+    // Set current holder based on role
+    product.currentHolder = org;
+    product.currentHolderId = userId;
+    product.status = status || (role === 'RETAILER' ? 'DELIVERED' : 'IN_TRANSIT');
     await product.save();
+
+    // Use dynamic notes sent from frontend, or fallback based on role
+    const defaultNotes = role === 'RETAILER'
+      ? `Custody transferred and accepted by retail node (${org}).`
+      : `Custody transferred and accepted by distributor node (${org}).`;
 
     await SupplyChainEvent.create({
       productId,
       eventType: 'CUSTODY_TRANSFER',
-      fromRole: req.user.role,
-      fromUser: req.user.userId || req.user._id,
-      notes: `Custody transferred and accepted by distributor node.`
+      fromRole: role,
+      fromUser: userId,
+      notes: notes || defaultNotes
     });
 
     res.status(200).json({ success: true, data: product });
+  } catch (error) {
+    next(error);
+  }
+};
+export const verifyProductNode = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findOne({ productId });
+    
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product node not found on ledger.' });
+    }
+
+    res.status(200).json({ 
+      success: true, 
+      message: 'Product authenticity verified successfully.',
+      data: product 
+    });
   } catch (error) {
     next(error);
   }

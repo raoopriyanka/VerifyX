@@ -5,18 +5,22 @@ import { authorizeRoles } from '../middlewares/role.middleware.js';
 
 const router = express.Router();
 
-// Apply authentication middleware to all routes
+// 1. PUBLIC ROUTE: Must be placed BEFORE authenticate and BEFORE /:productId 
+// so consumers can access it without a token and Express doesn't mistake 'verify' for a productId.
+router.get('/verify/:productId', productController.verifyProductNode);
+
+// 2. Apply authentication middleware to all subsequent routes
 router.use(authenticate);
 
 // Manufacturer endpoints
 router.post('/', authorizeRoles('MANUFACTURER'), productController.registerProduct);
 router.get('/manufacturer', authorizeRoles('MANUFACTURER'), productController.getManufacturerProducts);
 
-// General product endpoints
+// General protected product endpoints
 router.get('/', productController.getAllProducts);
 router.get('/:productId', productController.getProductDetails);
 
-// Distributor custody transfer endpoint (accessible by distributors and manufacturers)
-router.patch('/:productId/transfer', authorizeRoles('DISTRIBUTOR', 'MANUFACTURER'), productController.transferCustody);
+// Custody transfer endpoint (accessible by distributors, manufacturers, and retailers)
+router.patch('/:productId/transfer', authorizeRoles('DISTRIBUTOR', 'MANUFACTURER', 'RETAILER'), productController.transferCustody);
 
 export default router;

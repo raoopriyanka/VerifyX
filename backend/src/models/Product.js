@@ -20,7 +20,7 @@ const productSchema = new mongoose.Schema(
     // Status tracking
     status: {
       type: String,
-      enum: ['MANUFACTURED', 'DISPATCHED', 'IN_TRANSIT','DELIVERED', 'RECEIVED', 'SOLD', 'FLAGGED'],
+      enum: ['MANUFACTURED', 'DISPATCHED', 'IN_TRANSIT','DELIVERED', 'RECEIVED', 'SOLD', 'FLAGGED','DISCREPANCY_FLAGGED'],
       default: 'MANUFACTURED',
     },
     
