@@ -84,7 +84,7 @@ export default function PublicVerify() {
       <div className="text-center space-y-2">
         <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Public Product Verification</h1>
         <p className="text-sm text-slate-500">
-          Enter the VerifyX ID found on your product's packaging or upload its QR code to check its immutable ledger history.
+          Enter the ProvenX ID found on your product's packaging or upload its QR code to check its immutable ledger history.
         </p>
       </div>
 

@@ -66,7 +66,7 @@ export const getAllProducts = async (req, res, next) => {
       products = await Product.find({
         $or: [
           { currentHolderId: userId },
-          { status: { $in: ['DELIVERED', 'DISCREPANCY_FLAGGED'] } }
+          { status: { $in: ['DELIVERED', 'DISCREPANCY_FLAGGED', 'IN_TRANSIT'] } }
         ]
       });
     } else {

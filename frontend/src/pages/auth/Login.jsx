@@ -54,7 +54,7 @@ export default function Login() {
       <div className="mb-8 pt-4 sm:pt-0">
         <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Welcome back</h1>
         <p className="text-sm text-slate-500 mt-2">
-          Sign in to your VerifyX supply-chain node.
+          Sign in to your ProvenX supply-chain node.
         </p>
       </div>
 

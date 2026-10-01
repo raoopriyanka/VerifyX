@@ -29,7 +29,7 @@ export default function MobileSidebar({ isOpen, onClose, role = 'manufacturer' }
             <div className="p-2 bg-blue-600 rounded-xl text-white">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <span className="font-bold text-white tracking-tight text-lg">VerifyX</span>
+            <span className="font-bold text-white tracking-tight text-lg">ProvenX</span>
           </div>
           <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-white rounded-lg">
             <X className="w-5 h-5" />

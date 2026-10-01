@@ -29,7 +29,7 @@ export default function MainLayout() {
             <div className="p-2 bg-blue-600 rounded-xl text-white shadow-sm shadow-blue-500/20">
               <ShieldCheck className="w-5 h-5" />
             </div>
-            <span className="font-bold text-slate-900 tracking-tight text-lg">VerifyX</span>
+            <span className="font-bold text-slate-900 tracking-tight text-lg">ProvenX</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600 cursor-pointer">
@@ -61,9 +61,9 @@ export default function MainLayout() {
             <div className="p-1.5 bg-blue-600 rounded-lg text-white">
               <ShieldCheck className="w-4 h-4" />
             </div>
-            <span className="font-bold text-white text-sm tracking-tight">VerifyX Platform</span>
+            <span className="font-bold text-white text-sm tracking-tight">ProvenX Platform</span>
           </div>
-          <p>© 2026 VerifyX. Immutable Product Authentication & Provenance Ledger.</p>
+          <p>© 2026 ProvenX. Immutable Product Authentication & Provenance Ledger.</p>
         </div>
       </footer>
     </div>

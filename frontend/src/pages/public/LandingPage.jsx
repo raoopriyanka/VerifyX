@@ -19,7 +19,7 @@ export default function LandingPage() {
         </h1>
         
         <p className="text-base md:text-xl text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          VerifyX protects enterprise supply chains and consumer trust through cryptographic tracking, role-based custody transfers, and smart contract verification.
+          ProvenX protects enterprise supply chains and consumer trust through cryptographic tracking, role-based custody transfers, and smart contract verification.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -40,7 +40,7 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-20 bg-white border-t border-slate-200/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
           <div className="text-center space-y-3 max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">How VerifyX Works</h2>
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">How ProvenX Works</h2>
             <p className="text-sm text-slate-600">
               A seamless four-tier lifecycle tracking products securely from factory floor to end consumer.
             </p>
@@ -138,7 +138,7 @@ export default function LandingPage() {
           </h2>
           
           <p className="text-sm text-slate-400 max-w-xl mx-auto leading-relaxed">
-            VerifyX integrates Ethereum-compatible smart contracts, role-based access control, and modern web infrastructure to create a zero-trust verification environment.
+            ProvenX integrates Ethereum-compatible smart contracts, role-based access control, and modern web infrastructure to create a zero-trust verification environment.
           </p>
 
           <div className="pt-4">

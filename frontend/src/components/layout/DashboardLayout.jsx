@@ -54,7 +54,7 @@ export default function DashboardLayout() {
       <aside className="w-64 bg-slate-900 text-slate-300 flex flex-col border-r border-slate-800">
         <div className="p-6 border-b border-slate-800">
           <h1 className="text-xl font-bold text-white tracking-wider flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-blue-500" /> VerifyX
+            <ShieldCheck className="w-6 h-6 text-blue-500" /> ProvenX
           </h1>
           <p className="text-xs text-slate-400 mt-1 uppercase tracking-widest font-mono">Enterprise Trace</p>
         </div>

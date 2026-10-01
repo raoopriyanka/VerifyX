@@ -11,7 +11,7 @@ export default function AuthLayout() {
           <div className="p-2.5 bg-blue-600 rounded-xl text-white shadow-lg shadow-blue-500/30">
             <ShieldCheck className="w-6 h-6" />
           </div>
-          <span className="text-xl font-bold tracking-tight">VerifyX</span>
+          <span className="text-xl font-bold tracking-tight">ProvenX</span>
         </div>
 
         <div className="z-10 space-y-6 max-w-md">

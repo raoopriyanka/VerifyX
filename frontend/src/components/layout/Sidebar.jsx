@@ -27,7 +27,7 @@ export default function Sidebar({ role = 'manufacturer', collapsed = false }) {
         </div>
         {!collapsed && (
           <div className="flex flex-col">
-            <span className="font-bold text-white tracking-tight text-lg leading-none">VerifyX</span>
+            <span className="font-bold text-white tracking-tight text-lg leading-none">ProvenX</span>
             <span className="text-[10px] text-blue-400 font-medium tracking-wider uppercase mt-1">Enterprise Trace</span>
           </div>
         )}
